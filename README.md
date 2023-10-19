@@ -1,7 +1,8 @@
 # Timesheet-Springboot
 
 ## Setup
-Run Timesheet Java back-end and MySql database (timesheet database).
+1. Setup MySql database (timesheet database - `//localhost:3306/timesheet`).
+2. Run Timesheet Java back-end (Intellij).
 
 ## API link
 1. View Timesheet - `http://localhost:8080/timesheets`
