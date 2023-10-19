@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timesheet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css"
+        integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    <style>
+        body {
+            padding: 10px;
+        }
+    </style>
+</head>
+</head>
+
+<body>
+    <h1>Timesheet</h1>
+    <div id="1sec" style="border: 1;border-style: solid;padding: 20px;">
+        <div id="input">
+            <div class="form-group row">
+                <label for="inputTask" class="col-sm-2 col-form-label">Task</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="searchTask" placeholder="Task">
+                </div>
+            </div>
+        </div>
+        <div id="button" class="align-middle" style="padding: 10px;">
+            <center>
+                <button type="button" class="btn btn-primary" id="search">Search</button>
+                <button type="button" class="btn btn-primary" id="create" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">Create</button>
+            </center>
+        </div>
+    </div>
+    <div id="2sec">
+        <div id="table">
+            <table id="myTable" class="display">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Task</th>
+                        <th>Assigned To</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Modal Create -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Timesheet Entry</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="inputTask" class="col-sm-2 col-form-label">Project</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputProject" placeholder="Project">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputTask" class="col-sm-2 col-form-label">Task</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputTask" placeholder="Task">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputTask" class="col-sm-2 col-form-label">Date From</label>
+                        <div class="col-sm-10">
+                            <input type="date" class="form-control" id="inputDateFrom">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputTask" class="col-sm-2 col-form-label">Date To</label>
+                        <div class="col-sm-10">
+                            <input type="date" class="form-control" id="inputDateTo">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputTask" class="col-sm-2 col-form-label">Status</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" aria-label="Default select example" id="inputStatus">
+                                <option value="Open">Open</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputTask" class="col-sm-2 col-form-label">Assign To</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" aria-label="Default select example" id="inputAssign"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="save">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Update-->
+    <div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Timesheet Entry</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="inputTask" class="col-sm-2 col-form-label">Project</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputUpdateProject" placeholder="Project">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputTask" class="col-sm-2 col-form-label">Task</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputUpdateTask" placeholder="Task">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputTask" class="col-sm-2 col-form-label">Date From</label>
+                        <div class="col-sm-10">
+                            <input type="date" class="form-control" id="inputUpdateDateFrom">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputTask" class="col-sm-2 col-form-label">Date To</label>
+                        <div class="col-sm-10">
+                            <input type="date" class="form-control" id="inputUpdateDateTo">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputTask" class="col-sm-2 col-form-label">Status</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" aria-label="Default select example" id="inputUpdateStatus">
+                                <option value="Open">Open</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputTask" class="col-sm-2 col-form-label">Assign To</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" aria-label="Default select example"
+                                id="inputUpdateAssign"></select>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="inputUpdateId" />
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="updateButton">Update changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal delete-->
+    <div class="modal fade" id="deleteModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Timesheet</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="close-modal">No</button>
+                    <button type="button" class="btn btn-danger" id="delete-timesheet">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function timeConverter(UNIX_timestamp) {
+            var a = new Date(UNIX_timestamp * 1000);
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var year = a.getFullYear();
+            var month = months[a.getMonth()];
+            var date = a.getDate();
+            var hour = a.getHours();
+            var min = a.getMinutes();
+            var sec = a.getSeconds();
+            var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+            return time;
+        }
+
+        const editModal = (id) => {
+            $('#modalUpdate').modal("show");
+            $.ajax({
+                url: "http://localhost:8080/timesheet/id=" + id
+            }).then(function (data, status, jqxhr) {
+                console.log(data)
+                $('#inputUpdateProject').val(data.projectName);
+                $('#inputUpdateTask').val(data.task);
+                $('#inputUpdateDateFrom').val(moment(data.startDate).format("YYYY-MM-DD"));
+                $('#inputUpdateDateTo').val(moment(data.endDate).format("YYYY-MM-DD"));
+                $('#inputUpdateStatus').val(data.status);
+                $('#inputUpdateAssign').val(data.userId);
+                $('#inputUpdateId').val(id);
+            });
+        }
+
+
+        $("#updateButton").click(function () {
+
+            var id = document.getElementById("inputUpdateId").value
+
+            var addedData = JSON.stringify({
+                "projectName": document.getElementById("inputUpdateProject").value,
+                "task": document.getElementById("inputUpdateTask").value,
+                "status": document.getElementById("inputUpdateStatus").value,
+                "startDate": document.getElementById("inputUpdateDateFrom").value,
+                "endDate": document.getElementById("inputUpdateDateTo").value,
+                "user": { "userId": document.getElementById("inputUpdateAssign").value }
+            });
+            $.ajax({
+                url: "http://localhost:8080/timesheet/"+id,
+                type: "put",
+                data: addedData,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //console.log(data);
+                    alert("Timesheet Updated");
+                    $('#myTable').DataTable().destroy();
+                    generateTable();
+                    $('#modalUpdate').modal("hide");
+                },
+                error: function (errMsg) {
+                    alert(errMsg);
+                }
+
+            });
+
+        });
+
+        const deleteTimesheet = (id) => {
+            $('#deleteModal').modal("show")
+            $("#close-modal").click(function () {
+                $("#deleteModal").modal('hide');
+            });
+            $("#delete-timesheet").click(function () {
+                $.ajax({
+                    url: "http://localhost:8080/timesheet/" + id,
+                    type: 'DELETE',
+                    success: function (result) {
+                        $('#myTable').DataTable().destroy();
+                        generateTable();
+                        $("#deleteModal").modal('hide');
+                    }
+                });
+            });
+        }
+
+        $(document).ready(function () {
+            generateTable();
+            userSelect();
+        });
+
+        const generateTable = () => {
+            $.ajax({
+                url: "http://localhost:8080/timesheets"
+            }).then(function (data, status, jqxhr) {
+                var table = $('#myTable');
+                table.DataTable({
+                    "sDom": "ltipr",
+                    'data': data,
+                    columnDefs: [{ "type": "unix", "targets": 3, "render": function (data, type, full, meta) { return moment.utc(data, "x").toISOString().replace(/T/, ' Time: ').replace(/Z/, ''); } },
+                    { "type": "unix", "targets": 4, "render": function (data, type, full, meta) { return moment.utc(data, "x").toISOString().replace(/T/, ' Time: ').replace(/Z/, ''); } }],
+                    "columns": [
+                        { "data": "projectName" },
+                        { "data": "task" },
+                        { "data": "user" },
+                        { "data": "startDate" },
+                        { "data": "endDate" },
+                        { "data": "status" },
+                        {
+                            data: null,
+                            className: "dt-center editor-delete",
+                            orderable: false,
+                            "mRender": function (data, type, row) {
+                                return `<a href="javascript:editModal(${data.timesheetId})"  class="btn mb-1 btn-success btn-sm" title="Edit" ><span class="btn-icon-center"><i class="fa-solid fa-pencil"></i></span></a>
+                                <a href="javascript:deleteTimesheet(${data.timesheetId})" class="btn mb-1 btn-danger btn-sm" title="Delete" ><span class="btn-icon-center"><i class="fa-solid fa-x"></i></span></a>`;
+                            }
+                        }
+                    ],
+                })
+                $('#myTable').DataTable();
+                $('#searchTask').keyup(function () {
+                    table.dataTable().fnFilter($(this).val());
+                })
+            });
+        }
+
+        const userSelect = () => {
+            $.ajax({
+                url: "http://localhost:8080/users"
+            }).then(function (data, status, jqxhr) {
+                var select = '';
+                $.each(data, function (i, item) {
+                    select += `<option value="${item.userId}">${item.name}</option>`
+                })
+                $('#inputAssign').append(select);
+                $('#inputUpdateAssign').append(select);
+            });
+        }
+
+        $("#save").click(function () {
+
+            var addedData = JSON.stringify({
+                "projectName": document.getElementById("inputProject").value,
+                "task": document.getElementById("inputTask").value,
+                "status": document.getElementById("inputStatus").value,
+                "startDate": document.getElementById("inputDateFrom").value,
+                "endDate": document.getElementById("inputDateTo").value,
+                "user": { "userId": document.getElementById("inputAssign").value }
+            });
+            $.ajax({
+                url: "http://localhost:8080/timesheets",
+                type: "post",
+                data: addedData,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //console.log(data);
+                    alert("Timesheet Added");
+                    $('#myTable').DataTable().destroy();
+                    generateTable();
+                },
+                error: function (errMsg) {
+                    alert(errMsg);
+                }
+
+            });
+
+        });
+
+    </script>
+    <!-- <script src="
+    https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js
+    "></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
